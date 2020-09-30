@@ -10,8 +10,7 @@
 </head>
 <body>
 
-    <h1 class="display-2 text-orange2">Testando boostrap</h1>
- <button class="btn btn-lg btn-warning">ok</button>
+@yield('content')
  
 <script src="{{ asset('site/jquery.js') }}"></script>
 <script src="{{ asset('site/bootstrap.js') }}"></script>
