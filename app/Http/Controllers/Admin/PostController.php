@@ -27,7 +27,7 @@ class PostController extends Controller
     public function create()
     {
         return view('admin.pages.posts.create');
-       // return view('admin.pages.posts.create');
+       
     }
 
     /**
@@ -38,7 +38,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -60,7 +60,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        return ["Editando id: $id"];
     }
 
     /**
