@@ -1,11 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,8 +13,11 @@ class UserController extends Controller
      */
     public function index()
     {
-       return ['mariana','leticia','rosaria','valeria'];
+        return ['mariana', 'leticia', 'valeria','rosaria'];
     }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -24,7 +26,8 @@ class UserController extends Controller
      */
     public function create()
     {
-       //
+        return view('admin.pages.posts.create');
+       // return view('admin.pages.posts.create');
     }
 
     /**
@@ -57,7 +60,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return "Editando o id: $id";
+        //
     }
 
     /**

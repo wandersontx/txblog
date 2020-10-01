@@ -18,3 +18,7 @@ Route::get('/', function () {
 Route::namespace('Admin')->prefix('admin')->group(function(){
     Route::resource('users', 'UserController');
 });
+
+Route::namespace('Admin')->prefix('admin')->group(function (){
+    Route::resource('posts', 'PostController');
+});
