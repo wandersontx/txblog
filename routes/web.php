@@ -15,3 +15,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::namespace('Admin')->prefix('admin')->group(function(){
+    Route::resource('users', 'UserController');
+});
