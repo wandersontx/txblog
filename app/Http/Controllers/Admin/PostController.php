@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Models\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -13,7 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return ['mariana', 'leticia', 'valeria','rosaria'];
+        $posts = Post::paginate(15);
+        dd($posts);
     }
 
 
@@ -38,7 +40,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+       $data = $request->all();
+       $data['user_id'] = 1;
+       $data['is_active'] = true;
+
+       dd(Post::create($data));
     }
 
     /**
@@ -49,7 +55,8 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+       $post = Post::findOrFail($id);
+       dd($post);
     }
 
     /**
@@ -60,7 +67,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return ["Editando id: $id"];
+        $post = Post::find($id);
+        if($post)
+            return view('admin.pages.posts.edit' , compact('post'));
     }
 
     /**
@@ -72,7 +81,11 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::find($id);
+       if(!$post)
+            echo "Post não encontrado";
+        $post->update($request->only('title','description', 'content','slug'));
+        echo 'Atualizado com sucesso';
     }
 
     /**

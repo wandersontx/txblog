@@ -6,8 +6,9 @@
 <h1>Editando Post</h1>
 <form action="{{ route('posts.update' , $post->id) }}" method="post">
 @method('PUT')
-@include('admin.pages.posts._partials.edit')
-<button class="btn btn-info btn-block"></button>
+@include('admin.pages.posts._partials.form')
+<button class="btn btn-info btn-block">Salvar edição</button>
 </form>
 
 @endsection
+

@@ -11,7 +11,7 @@
 </div>
 <div class="form-group">
     <label>Conteúdo</label>
-    <textarea cols="30" rows="10" name="conteudo" class="form-control" value="{{ $post->conteudo ?? '' }}"></textarea>
+    <textarea cols="30" rows="10" name="content" class="form-control">{{ $post->content ?? '' }}</textarea>
 </div>
 <div class="form-group">
     <label>Slug</label>
