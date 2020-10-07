@@ -14,8 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(15);
-        dd($posts);
+        $posts = Post::paginate(8);
+        return view('admin.pages.posts.index', ['posts' => $posts]);
     }
 
 
@@ -43,8 +43,7 @@ class PostController extends Controller
        $data = $request->all();
        $data['user_id'] = 1;
        $data['is_active'] = true;
-
-       dd(Post::create($data));
+       return redirect()->route('posts.index');
     }
 
     /**
@@ -56,7 +55,9 @@ class PostController extends Controller
     public function show($id)
     {
        $post = Post::findOrFail($id);
-       dd($post);
+       if(!$post)
+        return view('admin.pages.posts.index');
+       return view('admin.pages.posts.show', compact('post'));
     }
 
     /**
@@ -85,7 +86,7 @@ class PostController extends Controller
        if(!$post)
             echo "Post não encontrado";
         $post->update($request->only('title','description', 'content','slug'));
-        echo 'Atualizado com sucesso';
+       return redirect()->route('posts.index');
     }
 
     /**
@@ -96,6 +97,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        if(!$post)
+            return redirect()->back();
+        $post->delete();
+        return redirect()->route('posts.index');
     }
 }

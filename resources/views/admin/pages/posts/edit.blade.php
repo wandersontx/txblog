@@ -9,6 +9,6 @@
 @include('admin.pages.posts._partials.form')
 <button class="btn btn-info btn-block">Salvar edição</button>
 </form>
-
+<a href="{{ route('posts.index') }}" class="text-warning">Inicio</a> 
 @endsection
 
