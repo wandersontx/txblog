@@ -17,3 +17,4 @@
     <label>Slug</label>
     <input type="text" name="slug" class="form-control" value="{{ $post->slug ?? '' }}">
 </div>
+

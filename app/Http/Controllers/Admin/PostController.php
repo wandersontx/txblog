@@ -85,7 +85,7 @@ class PostController extends Controller
         $post = Post::find($id);
        if(!$post)
             echo "Post não encontrado";
-        $post->update($request->only('title','description', 'content','slug'));
+        $post->update($request->only('title','description', 'content','slug', 'is_active'));
        return redirect()->route('posts.index');
     }
 
