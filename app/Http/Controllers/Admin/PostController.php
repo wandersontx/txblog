@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::paginate(8);
+        $posts = Post::orderBy('created_at','desc')->paginate(8);
         return view('admin.pages.posts.index', ['posts' => $posts]);
     }
 
@@ -43,6 +44,8 @@ class PostController extends Controller
        $data = $request->all();
        $data['user_id'] = 1;
        $data['is_active'] = true;
+       $user = User::find(1);
+       $user->posts()->create($data);
        return redirect()->route('posts.index');
     }
 

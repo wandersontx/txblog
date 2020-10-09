@@ -14,6 +14,9 @@
         <strong>title: </strong> {{ $post->title }}
     </li>
     <li class="list-group-item">
+        <strong>Autor: </strong> {{ $post->user->name }}
+    </li>
+    <li class="list-group-item">
         <strong>Create Date: </strong>   {{ date('d/m/y H:i:s', strtotime($post->created_at)) }}
     </li>
     <li class="list-group-item">
