@@ -17,4 +17,24 @@
     <label>Slug</label>
     <input type="text" name="slug" class="form-control" value="{{ $post->slug ?? '' }}">
 </div>
+<div class="form-group">
+    <label>Categorias</label>
+    <div class="row">
+        @foreach ($categories as $category)
+            <div class="col-2 checkbox">
+                <label>
+                     <input
+                     input type="checkbox" name="categories[]" value="{{ $category->id }}"
+                     @isset($post)
+                        @if ($post->categories->contains($category)) checked @endif 
+                     @endisset 
+                     >
+                     {{ $category->name }}
+                </label>
+            </div>
+        @endforeach
+    </div>
+</div>
+<hr>
+
 

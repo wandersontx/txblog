@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('posts.index');
 });
 
 Route::namespace('Admin')->prefix('admin')->group(function(){
@@ -21,4 +21,8 @@ Route::namespace('Admin')->prefix('admin')->group(function(){
 
 Route::namespace('Admin')->prefix('admin')->group(function (){
     Route::resource('posts', 'PostController');
+});
+
+Route::namespace('Admin')->prefix('admin')->group(function (){
+    Route::resource('categories' , 'CategoryController');
 });

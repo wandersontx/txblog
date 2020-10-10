@@ -1,13 +1,24 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    private $postRepository;
+    private $catRepository;
+
+    public function __construct(Post $post, Category $category)
+    {
+        $this->postRepository = $post;
+        $this->catRepository  = $category;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +26,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at','desc')->paginate(8);
+        $posts = $this->postRepository->orderBy('created_at','desc')->paginate(8);
         return view('admin.pages.posts.index', ['posts' => $posts]);
     }
 
@@ -29,7 +40,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.posts.create');
+        $categories = $this->catRepository->all(['id','name']);
+        return view('admin.pages.posts.create', compact('categories'));
        
     }
 
@@ -42,11 +54,22 @@ class PostController extends Controller
     public function store(Request $request)
     {
        $data = $request->all();
-       $data['user_id'] = 1;
-       $data['is_active'] = true;
-       $user = User::find(1);
-       $user->posts()->create($data);
-       return redirect()->route('posts.index');
+
+       try{
+        $data['is_active'] = true;
+        $user = User::find(1);
+        $post = $user->posts()->create($data);
+        $post->categories()->sync($data['categories']);
+        flash('Postagem inserida com sucesso!')->success();
+        return redirect()->route('posts.index');
+       } catch (\Exception $e) {
+           $message = 'Erro ao remover categoria!';
+           if(env('APP_DEBUG')) {
+               $message = $e->getMessage();
+           }
+           flash($message)->warning();
+           return redirect()->back();
+       }
     }
 
     /**
@@ -57,9 +80,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-       $post = Post::findOrFail($id);
-       if(!$post)
-        return view('admin.pages.posts.index');
+       $post = $this->postRepository->findOrFail($id);
        return view('admin.pages.posts.show', compact('post'));
     }
 
@@ -71,9 +92,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id);
+        $categories = $this->catRepository->all(['id','name']);
+        $post = $this->postRepository->find($id);
         if($post)
-            return view('admin.pages.posts.edit' , compact('post'));
+        return view('admin.pages.posts.edit' , compact('post','categories'));
     }
 
     /**
@@ -83,13 +105,24 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        $post = Post::find($id);
-       if(!$post)
-            echo "Post não encontrado";
-        $post->update($request->only('title','description', 'content','slug', 'is_active'));
-       return redirect()->route('posts.index');
+        $data = $request->all();
+        try{
+            //$post = $this->postRepository->find($id);       
+            $post->update($data);
+            $post->categories()->sync($data['categories']);
+            flash('Postagem atualizada com sucesso!')->success();
+            return redirect()->route('posts.show',['post' => $post->id]);
+        } catch (\Exception $e) {
+            $message = 'Erro ao atualizar categoria!';
+            if(env('APP_DEBUB')) {
+                $message = $e->getMessage();
+            }
+            flash($message)->warning();
+            return redirect()->back();
+
+        }
     }
 
     /**
@@ -100,10 +133,19 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
-        if(!$post)
+        try { 
+            $post = $this->postRepository->find($id);    
+            $post->delete();
+            flash('Post deletado com sucesso')->success();
+            return redirect()->route('posts.index');
+        } catch (\Exception $e) {
+            $message = 'Erro ao deletar post';
+            if(env('APP_DEBUG')){
+                $message = $e->getMessage();
+            }
+            flash($message)->warning();
             return redirect()->back();
-        $post->delete();
-        return redirect()->route('posts.index');
+        }
+        
     }
 }

@@ -8,10 +8,14 @@
 
     <link rel="stylesheet" href="{{ asset('site/style.css') }}">
 </head>
-<body>
-<div class="container">
-    @yield('content')
-</div>
+<body style="margin-top:20px;">
+    <div class="container">
+        @include('flash::message')
+        @yield('content2')
+    </div>
+    <div class="container">    
+        @yield('content')
+    </div>
  
 <script src="{{ asset('site/jquery.js') }}"></script>
 <script src="{{ asset('site/bootstrap.js') }}"></script>
