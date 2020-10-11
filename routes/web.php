@@ -12,17 +12,26 @@
 */
 
 Route::get('/', function () {
-    return redirect()->route('posts.index');
+    return view('welcome');
 });
 
-Route::namespace('Admin')->prefix('admin')->group(function(){
-    Route::resource('users', 'UserController');
+
+Auth::routes();
+
+Route::resource('users', 'UserController');
+
+Route::group(['middleware' => ['auth']], function (){
+    Route::namespace('Admin')->prefix('admin')->group(function(){    
+        Route::resource('posts', 'PostController');
+        Route::resource('categories' , 'CategoryController');
+
+        Route::prefix('profile')->name('profile.')->group(function(){
+            Route::get('/', 'ProfileController@Index')->name('index');
+            Route::post('/update', 'ProfileController@update')->name('update');
+        });
+    });
 });
 
-Route::namespace('Admin')->prefix('admin')->group(function (){
-    Route::resource('posts', 'PostController');
-});
 
-Route::namespace('Admin')->prefix('admin')->group(function (){
-    Route::resource('categories' , 'CategoryController');
-});
+
+
