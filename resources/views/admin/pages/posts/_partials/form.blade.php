@@ -18,6 +18,10 @@
     <input type="text" name="slug" class="form-control" value="{{ $post->slug ?? '' }}">
 </div>
 <div class="form-group">
+    <label>Foto de Capa</label>
+    <input type="file" name="thum" class="form-control">
+</div>
+<div class="form-group">
     <label>Categorias</label>
     <div class="row">
         @foreach ($categories as $category)
