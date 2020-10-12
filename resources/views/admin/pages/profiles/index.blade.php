@@ -6,15 +6,24 @@
         @csrf
         <div class="form-group">
             <label>Nome</label>
-            <input type="text" name="user[name]" class="form-control" value="{{ $user->name ?? '' }}">
+            <input type="text" name="user[name]" class="form-control @error('user.name') is-invalid @enderror" value="{{ $user->name ?? '' }}">
+            @error('user.name')
+                <p class="invalid-feedback">{{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group">
             <label>Email</label>
-            <input type="text" name="user[email]" class="form-control" value="{{ $user->email ?? '' }}">
+            <input type="text" name="user[email]" class="form-control @error('user.email') is-invalid @enderror" value="{{ $user->email ?? '' }}">
+            @error('user.email')
+                <p class="invalid-feedback">{{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group">
             <label>Senha</label>
-            <input type="password" name="user[password]" class="form-control" placeholder="Se digitar atualizar senha, favor digttar uma nova senha">
+            <input type="password" name="user[password]" class="form-control @error('user.password') is-invalid @enderror" placeholder="Se digitar atualizar senha, favor digitar uma nova senha">
+            @error('user.password')
+                <p class="invalid-feedback"> {{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group">
             <label>Sobre</label>
@@ -22,7 +31,10 @@
         </div>
         <div class="form-group">
             <label>Avatar</label>
-            <input type="file" name="avatar" class="form-control">
+            <input type="file" name="avatar" class="form-control @error('user.email') is-invalid @enderror">
+            @error('user.email')
+                <p class="invalid-feedback">{{ $message }}</p>
+            @enderror
         </div>
         <div class="form-group">
             <label>Facebook</label>
