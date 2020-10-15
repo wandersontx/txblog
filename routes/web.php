@@ -11,9 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 
 Auth::routes();
@@ -32,6 +29,12 @@ Route::group(['middleware' => ['auth']], function (){
     });
 });
 
+
+Route::namespace('Admin\Site')->name('site.')->group(function(){
+    Route::get('/', 'HomeController@index')->name('index');
+    Route::get('/post/{slug}', 'HomeController@single')->name('single');
+    Route::post('/post/comment', 'CommentController@saveComment')->name('single.comment');
+});
 
 
 
